@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler</title>
+</head>
+<body>
+    <h1>Kampanyalar</h1>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Ürün Adı</th>
+            <th>Fiyat</th>
+            <th>Toplam Satış</th>
+           
+        </thead>
+        <tbody id="urunler">
+
+        </tbody>
+    </table>
+</body>
+<script>
+    async function urun_getir(){
+    try{
+        const response=await fetch("http://localhost:5000/api/urun_getir")
+     if(!response.ok){
+        throw new Error("Ürünler Yüklenemedi")
+     }   
+     const kullanicilar=await response.json();
+     const kullanici_tablo=document.getElementById("urunler");
+     kullanicilar.forEach((kullanici)=>{
+        const satir = document.createElement("tr");
+        satir.innerHTML=`
+        <td>${urun.ID}</td>
+        <td>${urun.urun_ad}</td>
+        <td>${urun.fiyat}</td>
+        <td>${urun.satis}</td>
+        `;
+        kullanici_tablo.appendChild(satir)
+     })
+        }catch(error){
+            console.log(error)
+            alert("Ürünleri yüklenirken bir hat oluştu")
+        }
+     
+}
+window.onload=urun_getir;
+</script>
+</html>
