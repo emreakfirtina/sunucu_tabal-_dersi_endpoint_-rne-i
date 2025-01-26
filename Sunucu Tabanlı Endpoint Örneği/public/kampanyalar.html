@@ -47,4 +47,54 @@
 }
 window.onload=urun_getir;
 </script>
+<script>
+    async function filtrele(){
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
+        
+        if(!startDate || !endDate){
+            alert("Lütfen başlangıç ve bitiş tarihleri giriniz");
+            return;
+        }
+    
+        const url = `http://localhost:5000/api/siparis_tarih?startDate=${startDate}&endDate=${endDate}`;
+        try {
+            const response = await fetch(url);
+            const result = await response.json();
+            
+            if (result.success) {
+               
+                if ($.fn.DataTable.isDataTable("#satislar_tablosu")) {
+                    $("#satislar_tablosu").DataTable().destroy();
+                }
+    
+                
+                const tableBody = document.querySelector("#satislar_tablosu tbody");
+                tableBody.innerHTML = "";
+    
+                
+                result.data.forEach(siparis => {
+                    const row = `
+                        <tr>
+                            <td>${satislar.id}</td>
+                            <td>${satislar.siparis_tarihi}</td>
+                            <td>${satislar.toplam_miktar}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+    
+                
+                $("#satislar_tablosu").DataTable();
+            } else {
+                alert("Veri Alınamadı");
+            }
+        } catch (error) {
+            console.error("Bir hata oluştu", error);
+        }
+    }
+    
+        window.onload=()=>{siparis_getir();sales_data_getir()}
+        </script>
+    </html>
 </html>
